@@ -1,8 +1,9 @@
 import 'dart:io';
 import 'package:chat_app/Common/Enums/MessageEnum.dart';
+import 'package:chat_app/Common/Provider/MessageReplyProvider.dart';
 import 'package:chat_app/Common/Utils/FilePicker.dart';
 import 'package:chat_app/Features/Chat/Controller/ChatController.dart';
-import 'package:enough_giphy_flutter/enough_giphy_flutter.dart';
+import 'package:chat_app/Features/Chat/Widgets/MessageReplyPreview.dart';
 import 'package:flutter/cupertino.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter_riverpod/flutter_riverpod.dart';
@@ -10,8 +11,9 @@ import 'package:emoji_picker_flutter/emoji_picker_flutter.dart';
 
 class BottomChatFeild extends ConsumerStatefulWidget {
   final String receiverUserId;
+  bool isGroupChat;
 
-  BottomChatFeild({Key? key, required this.receiverUserId}) : super(key: key);
+  BottomChatFeild({Key? key, required this.receiverUserId,required this.isGroupChat}) : super(key: key);
 
   @override
   ConsumerState<BottomChatFeild> createState() => _BottomChatFeildState();
@@ -32,7 +34,7 @@ class _BottomChatFeildState extends ConsumerState<BottomChatFeild> {
   void sendTextMessage() async {
     if (isShowSendButton) {
       ref.read(chatControllerProvider).sendTextMessage(
-          textController.text.trim(), context, widget.receiverUserId);
+          textController.text.trim(), context, widget.receiverUserId,widget.isGroupChat);
       setState(() {
         textController.text = '';
       });
@@ -42,7 +44,7 @@ class _BottomChatFeildState extends ConsumerState<BottomChatFeild> {
   void sendFileMessage({required File file, required MessageEnum messageEnum}) {
     ref
         .read(chatControllerProvider)
-        .sendFileMessage(file, context, widget.receiverUserId, messageEnum);
+        .sendFileMessage(file, context, widget.receiverUserId, messageEnum,widget.isGroupChat);
   }
 
   void selectImage() async {
@@ -55,7 +57,7 @@ class _BottomChatFeildState extends ConsumerState<BottomChatFeild> {
   void selectGif() async {
     final gif = await pickGif(context);
     if (gif != null) {
-       ref.read(chatControllerProvider).sendGifMessage(gif.url, context, widget.receiverUserId);
+       ref.read(chatControllerProvider).sendGifMessage(gif.url, context, widget.receiverUserId,widget.isGroupChat);
     }
   }
 
@@ -92,17 +94,21 @@ class _BottomChatFeildState extends ConsumerState<BottomChatFeild> {
 
   @override
   Widget build(BuildContext context) {
+    final messageReply = ref.watch(messageProvider);
+    final isShowMessageReply = messageReply != null;
+
     return Column(
       children: [
+        isShowMessageReply ? const MessageReplyPreview() : const SizedBox(),
         Row(
           mainAxisAlignment: MainAxisAlignment.start,
           children: [
             Container(
                 alignment: Alignment.bottomCenter,
-                margin: const EdgeInsets.only(left: 6),
+                margin: const EdgeInsets.only(left: 6,bottom: 6),
                 decoration: BoxDecoration(
                   borderRadius: BorderRadius.circular(20),
-                  color: Colors.green,
+                  color: Colors.blueGrey[700],
                 ),
                 width: MediaQuery.of(context).size.width * 0.80,
                 height: 45,
@@ -149,13 +155,14 @@ class _BottomChatFeildState extends ConsumerState<BottomChatFeild> {
                     )
                   ],
                 )),
-            SizedBox(
-              width: MediaQuery.of(context).size.width * 0.18,
+            Container(
+              width: MediaQuery.of(context).size.width * 0.17,
+              margin: EdgeInsets.only(bottom: 8),
               child: IconButton(
                   style: const ButtonStyle(
                       shape: MaterialStatePropertyAll(
                         CircleBorder(
-                          side: BorderSide(),
+                          side: BorderSide(color: Colors.green),
                         ),
                       ),
                       backgroundColor: MaterialStatePropertyAll(Colors.green),

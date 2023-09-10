@@ -104,4 +104,5 @@ class AuthRepository {
         .map((event) => UserModel.fromMap(event.data()!));
     return stream;
   }
+
 }

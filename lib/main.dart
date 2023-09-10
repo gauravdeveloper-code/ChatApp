@@ -2,6 +2,7 @@ import 'package:chat_app/Common/Widgets/Loader.dart';
 import 'package:chat_app/ErrorPage.dart';
 import 'package:chat_app/Features/Auth/Controller/Auth_Controller.dart';
 import 'package:chat_app/Features/Auth/Screens/Login_Screen.dart';
+import 'package:chat_app/Features/Call/Screens/CallPickupScreen.dart';
 import 'package:chat_app/Features/Screens/Moblie_Screen.dart';
 import 'package:chat_app/Router.dart';
 import 'package:chat_app/Widgets/Constants/colors.dart';
@@ -32,7 +33,7 @@ class MyApp extends ConsumerWidget {
             if (user == null) {
               return const LoginScreen();
             }
-            return const MobileScreen();
+            return  const MobileScreen();
           },
           error: (err, trace) {
             return ErrorPage(

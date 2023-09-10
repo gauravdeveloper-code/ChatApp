@@ -1,3 +1,5 @@
+import 'package:chat_app/Common/Enums/MessageEnum.dart';
+import 'package:chat_app/Common/Provider/MessageReplyProvider.dart';
 import 'package:chat_app/Common/Widgets/Loader.dart';
 import 'package:chat_app/Features/Chat/Controller/ChatController.dart';
 import 'package:chat_app/Features/Chat/Widgets/message_cards.dart';
@@ -10,13 +12,15 @@ import 'package:intl/intl.dart';
 
 class ChatList extends ConsumerStatefulWidget {
   final String receiverUserId;
-  const ChatList({super.key,  required this.receiverUserId});
+  final bool isGroupChat;
+
+  const ChatList({super.key, required this.receiverUserId,required this.isGroupChat});
+
   @override
   ConsumerState<ChatList> createState() => _ChatListState();
 }
 
 class _ChatListState extends ConsumerState<ChatList> {
-
   final ScrollController messageController = ScrollController();
 
   @override
@@ -26,15 +30,29 @@ class _ChatListState extends ConsumerState<ChatList> {
     super.dispose();
   }
 
+  void onMessageSwipe({
+    required String messageReply,
+    required bool isMe,
+    required MessageEnum messageEnum,
+  }) {
+    ref.read(messageProvider.notifier).update((state) => MessageReply(
+        messageEnum: messageEnum, message: messageReply, isme: isMe));
+  }
+
   @override
   Widget build(BuildContext context) {
     return StreamBuilder<List<MessageModel>>(
-      stream: ref.read(chatControllerProvider).getMessages(widget.receiverUserId),
+      stream: widget.isGroupChat
+        ? ref
+        .read(chatControllerProvider)
+        .getGroupMessages(widget.receiverUserId)
+        : ref
+        .read(chatControllerProvider)
+        .getMessages(widget.receiverUserId),
       builder: (context, snapshot) {
         if (snapshot.connectionState == ConnectionState.waiting) {
           return const Loader();
-        }
-        else if(!snapshot.hasData){
+        } else if (!snapshot.hasData) {
           return const Text('Did not have any message to show');
         }
         SchedulerBinding.instance.addPostFrameCallback((_) {
@@ -47,11 +65,27 @@ class _ChatListState extends ConsumerState<ChatList> {
           itemBuilder: (context, index) {
             var message = snapshot.data![index];
 
+            if (message.isSeen == false &&
+                message.receiverId == FirebaseAuth.instance.currentUser!.uid) {
+              ref.read(chatControllerProvider).setIsSeen(
+                  messageId: message.messageId,
+                  receiverUserId: widget.receiverUserId,
+                  context: context);
+            }
+
             if (message.senderId == FirebaseAuth.instance.currentUser!.uid) {
               return MyMessageCard(
                 message: message.text,
                 date: DateFormat.Hm().format(message.timeSent),
                 type: message.messageType,
+                onLeftSwipe: () => onMessageSwipe(
+                    messageReply: message.text,
+                    isMe: true,
+                    messageEnum: message.messageType),
+                repliedMessage: message.repliedMessage,
+                repliedMessageType: message.repliedMessageType,
+                userName: message.repliedTo,
+                isSeen: message.isSeen,
                 // other properties
               );
             } else {
@@ -59,6 +93,13 @@ class _ChatListState extends ConsumerState<ChatList> {
                 message: message.text,
                 date: DateFormat.Hm().format(message.timeSent),
                 type: message.messageType,
+                onRightSwipe: () => onMessageSwipe(
+                    messageReply: message.text,
+                    isMe: false,
+                    messageEnum: message.messageType),
+                repliedMessage: message.repliedMessage,
+                repliedMessageType: message.repliedMessageType,
+                userName: message.repliedTo,
                 // other properties
               );
             }
@@ -68,4 +109,3 @@ class _ChatListState extends ConsumerState<ChatList> {
     );
   }
 }
-

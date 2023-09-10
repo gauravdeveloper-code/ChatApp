@@ -31,27 +31,27 @@ class WebScreen extends StatelessWidget {
             width: MediaQuery.of(context).size.width * 0.7,
             decoration: const BoxDecoration(
                 image: DecorationImage(
-                    image: AssetImage('Assets/Images/chat_bg.png'),
+                    image: AssetImage('Assets/Images/ChatBg.jpg'),
                     fit: BoxFit.cover)),
             child: Expanded(
               child: Column(
                 children: [
                   web_message_appbar(),
-                  MyMessageCard(
-                      message: 'message',
-                      date: 'date',
-                      // onLeftSwipe: () {},
-                      // repliedText: "repliedText",
-                      // username: "Gaurav",
-                      // isSeen: true
-                  ),
-                  SenderMessageCard(
-                      message: "message",
-                      date: "date",
-                      // onRightSwipe: () {},
-                      // repliedText: "repliedText",
-                      // username: "username"
-                  )
+                  // MyMessageCard(
+                  //     message: 'message',
+                  //     date: 'date',
+                  //     // onLeftSwipe: () {},
+                  //     // repliedText: "repliedText",
+                  //     // username: "Gaurav",
+                  //     // isSeen: true
+                  // ),
+                  // SenderMessageCard(
+                  //     message: "message",
+                  //     date: "date",
+                  //     // onRightSwipe: () {},
+                  //     // repliedText: "repliedText",
+                  //     // username: "username"
+                  // )
                 ],
               ),
             ))
