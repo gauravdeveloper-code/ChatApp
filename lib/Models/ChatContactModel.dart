@@ -1,6 +1,3 @@
-
-import 'package:cloud_firestore/cloud_firestore.dart';
-
 class ChatContactModel {
   final String name;
   final String lastMessage;

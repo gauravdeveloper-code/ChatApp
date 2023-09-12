@@ -72,53 +72,53 @@ class _CallRecordsScreenState extends ConsumerState<CallRecordsScreen> {
                                 subtitle: Padding(
                                   padding: const EdgeInsets.only(top: 5),
                                   child: (chatContactData.callerId ==
-                                          auth.currentUser!.uid)
+                                      auth.currentUser!.uid)
                                       ? Row(
-                                          children: [
-                                            const Text(
-                                              'Outgoing',
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.green),
-                                            ),
-                                            const Icon(
-                                              CupertinoIcons.arrow_up_right,
-                                              color: Colors.green,
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(
-                                                DateFormat.Hm().format(
-                                                    chatContactData.timeCalled),
-                                                style: const TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.white)),
-                                          ],
-                                        )
+                                    children: [
+                                      const Text(
+                                        'Outgoing',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.green),
+                                      ),
+                                      const Icon(
+                                        CupertinoIcons.arrow_up_right,
+                                        color: Colors.green,
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                          DateFormat.Hm().format(
+                                              chatContactData.timeCalled),
+                                          style: const TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.white)),
+                                    ],
+                                  )
                                       : Row(
-                                          children: [
-                                            const Text(
-                                              'Incoming',
-                                              style: TextStyle(
-                                                  fontSize: 16,
-                                                  color: Colors.green),
-                                            ),
-                                            const Icon(
-                                              CupertinoIcons.arrow_down_left,
-                                              color: Colors.green,
-                                            ),
-                                            const SizedBox(
-                                              width: 10,
-                                            ),
-                                            Text(
-                                                DateFormat.Hm().format(
-                                                    chatContactData.timeCalled),
-                                                style: const TextStyle(
-                                                    fontSize: 14,
-                                                    color: Colors.white)),
-                                          ],
-                                        ),
+                                    children: [
+                                      const Text(
+                                        'Incoming',
+                                        style: TextStyle(
+                                            fontSize: 16,
+                                            color: Colors.green),
+                                      ),
+                                      const Icon(
+                                        CupertinoIcons.arrow_down_left,
+                                        color: Colors.green,
+                                      ),
+                                      const SizedBox(
+                                        width: 10,
+                                      ),
+                                      Text(
+                                          DateFormat.Hm().format(
+                                              chatContactData.timeCalled),
+                                          style: const TextStyle(
+                                              fontSize: 14,
+                                              color: Colors.white)),
+                                    ],
+                                  ),
                                 ),
                               ),
                             ),

@@ -51,6 +51,9 @@ class CallRepository {
         });
       }
 
+      print(user.name);
+      print(user.uid);
+
       CallModel callDetails = CallModel(
         callerId: auth.currentUser!.uid,
         receiverId: user.name,

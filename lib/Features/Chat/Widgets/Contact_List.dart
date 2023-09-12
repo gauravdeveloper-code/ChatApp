@@ -1,3 +1,4 @@
+import 'package:chat_app/Common/Widgets/DisplayProfileCard.dart';
 import 'package:chat_app/Common/Widgets/Loader.dart';
 import 'package:chat_app/Features/Call/Controller/CallController.dart';
 import 'package:chat_app/Features/Call/Screens/CallPickupScreen.dart';
@@ -5,7 +6,6 @@ import 'package:chat_app/Features/Chat/Controller/ChatController.dart';
 import 'package:chat_app/Features/Chat/Screens/MobileChatsScreen.dart';
 import 'package:chat_app/Models/CallingStateModel.dart';
 import 'package:chat_app/Models/ChatContactModel.dart';
-import 'package:chat_app/Models/User_Model.dart';
 import 'package:chat_app/Models/group.dart';
 import 'package:chat_app/Widgets/Constants/colors.dart';
 import 'package:flutter/cupertino.dart';
@@ -18,44 +18,49 @@ class Contact_List extends ConsumerWidget {
 
   @override
   Widget build(BuildContext context, WidgetRef ref) {
-
     return Padding(
       padding: const EdgeInsets.only(top: 10),
       child: SingleChildScrollView(
         child: Column(
           children: [
+            //VideoCall Notifier
             StreamBuilder<CallingStateModel>(
                 stream: ref.watch(callControllerProvider).callingState(),
                 builder: (context, snapshot) {
                   if (snapshot.hasData) {
-                    if(snapshot.data!.request)
-                      {
-                        return InkWell(
-                              onTap: ()=>Navigator.pushNamed(context,CallPickupScreen.RouteName,arguments: {
-                                'profilePic' : snapshot.data!.profilePic,
-                                'roomId' : snapshot.data!.roomId,
-                                'senderName' : snapshot.data!.callerName,
-                              }),
-                              child: Container(
-                                  height: 40,
-                                  margin: EdgeInsets.only(bottom: 10,top: 10),
-                                  alignment: Alignment.center,
-                                  width: MediaQuery.sizeOf(context).width,
-                                  color: Colors.green,
-                                  child: const Row(
-                                    mainAxisAlignment: MainAxisAlignment.center,
-                                    children: [
-                                      Text('Incoming Call'),
-                                      SizedBox(width: 10,),
-                                      Icon(CupertinoIcons.video_camera)
-                                    ],
-                                  )),
-                            );
-                      }
+                    if (snapshot.data!.request) {
+                      return InkWell(
+                        onTap: () => Navigator.pushNamed(
+                            context, CallPickupScreen.RouteName,
+                            arguments: {
+                              'profilePic': snapshot.data!.profilePic,
+                              'roomId': snapshot.data!.roomId,
+                              'senderName': snapshot.data!.callerName,
+                            }),
+                        child: Container(
+                            height: 40,
+                            margin: EdgeInsets.only(bottom: 10, top: 10),
+                            alignment: Alignment.center,
+                            width: MediaQuery.sizeOf(context).width,
+                            color: Colors.green,
+                            child: const Row(
+                              mainAxisAlignment: MainAxisAlignment.center,
+                              children: [
+                                Text('Incoming Call'),
+                                SizedBox(
+                                  width: 10,
+                                ),
+                                Icon(CupertinoIcons.video_camera)
+                              ],
+                            )),
+                      );
+                    }
                     return Container();
-                      }
+                  }
                   return Container();
                 }),
+
+            //One to one Contact Stream
             StreamBuilder<List<ChatContactModel>>(
               stream: ref.watch(chatControllerProvider).chatContacts(),
               builder: (context, snapshot) {
@@ -87,7 +92,17 @@ class Contact_List extends ConsumerWidget {
                                         chatContactData.profilePic),
                                     radius: 30,
                                   ),
-                                  onTap: () {},
+                                  onTap: () => showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Dialog(
+                                          child: DisplayProfileCard(
+                                            isGroup: false,
+                                            groupData: null,
+                                            userData: chatContactData,
+                                          ),
+                                        );
+                                      }),
                                 ),
                                 trailing: Text(
                                     DateFormat.Hm()
@@ -122,6 +137,8 @@ class Contact_List extends ConsumerWidget {
                 }
               },
             ),
+
+            //Group Contact Stream
             StreamBuilder<List<Group>>(
               stream: ref.watch(chatControllerProvider).chatGroups(),
               builder: (context, snapshot) {
@@ -153,7 +170,17 @@ class Contact_List extends ConsumerWidget {
                                         NetworkImage(groupData.groupPic),
                                     radius: 30,
                                   ),
-                                  onTap: () {},
+                                  onTap: () => showDialog(
+                                      context: context,
+                                      builder: (context) {
+                                        return Dialog(
+                                          child: DisplayProfileCard(
+                                            isGroup: true,
+                                            groupData: groupData,
+                                            userData: null,
+                                          ),
+                                        );
+                                      }),
                                 ),
                                 trailing: Text(
                                     DateFormat.Hm().format(groupData.timeSent),

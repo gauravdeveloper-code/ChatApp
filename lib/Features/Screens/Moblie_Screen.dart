@@ -98,8 +98,9 @@ class _MobileScreenState extends ConsumerState<MobileScreen>
                   Text('Calls'),
                 ],
                 unselectedLabelColor: Colors.white,
-                indicatorColor: Colors.green,
-                labelColor: Colors.green,
+                indicatorColor: Colors.green[500],
+                indicatorSize: TabBarIndicatorSize.tab,
+                labelColor: Colors.green[500],
                 labelPadding: const EdgeInsets.all(12),
               )),
           body: TabBarView(
