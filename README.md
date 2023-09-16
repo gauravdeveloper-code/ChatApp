@@ -1,16 +1,35 @@
-# chat_app
+# Chat App
 
-A new Flutter project.
+Chatting Application with Flutter, Firebase & Riverpod 2.0!
 
-## Getting Started
+## Features
+Phone Number Authentication
+1-1 Chatting with Contacts Only
+Group Chatting
+Text, Image, GIF, Audio(Recording), Video & Emoji Sharing
+Status Visible to Contacts Only and Disappears after 24 hours
+Video Calling
+Online/Offline Status
+Seen Message
+Replying to Messages
+Auto Scroll on New Messages
 
-This project is a starting point for a Flutter application.
+## Installation
+After cloning this repository, migrate to chat_app folder. 
+Then, follow the following steps:
+Create Firebase Project
+Run the commands:
+npm install -g firebase-tools
+dart pub global activate flutterfire_cli
+flutterfire configure
+Enable Authentication
+Add Firestore & Storage Rules
+Create Android & iOS Apps
+For Video Calling Create an Account on **ZegoCloud** 
+For using Gifs Feature Create an Account on **Giphy.com**
 
-A few resources to get you started if this is your first Flutter project:
 
-- [Lab: Write your first Flutter app](https://docs.flutter.dev/get-started/codelab)
-- [Cookbook: Useful Flutter samples](https://docs.flutter.dev/cookbook)
+# Note 
+Make Sure to Use Latest Flutter Version and Update all Pubspec dependencies.
 
-For help getting started with Flutter development, view the
-[online documentation](https://docs.flutter.dev/), which offers tutorials,
-samples, guidance on mobile development, and a full API reference.
+# ScreenShots of the Application
