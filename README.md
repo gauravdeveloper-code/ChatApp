@@ -32,4 +32,3 @@ For using Gifs Feature Create an Account on **Giphy.com**
 # Note 
 Make Sure to Use Latest Flutter Version and Update all Pubspec dependencies.
 
-# ScreenShots of the Application
